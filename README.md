@@ -1,4 +1,10 @@
-# Puppeteer-hcaptcha-solver
+# Puppeteer-hcaptcha-solver (fork)
+
+# Installation:
+
+`npm install https://github.com/ForestCrazy/puppeteer-hcaptcha-solver.git`
+
+# Puppeteer-hcaptcha-solver (original)
 
 Solve Hcaptcha on any website using puppeteer
 
