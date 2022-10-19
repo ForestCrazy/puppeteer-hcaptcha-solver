@@ -2,7 +2,7 @@
  * @author Shahzain Masood
  * Github: https://github.com/shahzain345/puppeteer-hcaptcha-solver
  */
-import { Page, Frame, Browser } from "puppeteer";
+import { Page, Frame } from "puppeteer";
 import { createCursor } from "ghost-cursor-frames";
 import { get_result } from "./python/get_result";
 import { install_py_files } from "./installation";
@@ -10,10 +10,8 @@ const sleep = (seconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 };
 export class PuppeterHcaptchaSolve {
-  browser: Browser;
   use_gc: boolean;
-  constructor(browser: Browser, use_gc: boolean) {
-    this.browser = browser;
+  constructor(use_gc: boolean) {
     this.use_gc = use_gc;
   }
   async solve(page: Page) {
