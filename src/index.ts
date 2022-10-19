@@ -16,6 +16,7 @@ export class PuppeterHcaptchaSolve {
   }
   async solve(page: Page) {
     return new Promise(async (resolve) => {
+      await page.waitForTimeout(4000);
       const isElmPresent = await this._detect_captcha(page);
       let cursor: any = null;
       if (isElmPresent) {
