@@ -20,7 +20,7 @@ export class PuppeterHcaptchaSolve {
       const isElmPresent = await this._detect_captcha(page);
       let cursor: any = null;
       if (isElmPresent) {
-        await page.click("iframe");
+        await page.click("div.h-captcha > iframe");
         const frame = await page
           .frames()
           .find((x) => x.url().includes("https://newassets.hcaptcha.com"));
@@ -67,7 +67,7 @@ export class PuppeterHcaptchaSolve {
 
   private async _detect_captcha(page: Page) {
     try {
-      await page.waitForSelector("iframe");
+      await page.waitForSelector("div.h-captcha > iframe");
       return true;
     } catch (e) {
       return false;
