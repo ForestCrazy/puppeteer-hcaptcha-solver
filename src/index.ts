@@ -16,7 +16,7 @@ export class PuppeterHcaptchaSolve {
     this.use_gc = use_gc;
   }
   async solve(page: Page) {
-    return Promise.race([
+    return await Promise.race([
       new Promise(async (resolve, rejects) => {
         await page
           .waitForSelector(
