@@ -16,24 +16,17 @@ export class PuppeterHcaptchaSolve {
     this.use_gc = use_gc;
   }
   async solve(page: Page) {
-    return await Promise.race([
-      new Promise(async (resolve, rejects) => {
-        await page
-          .waitForSelector(
-            'div.check[style="width: 30px; height: 30px; display: block; position: absolute; top: 0px; left: 0px; animation: 0.4s linear 0s 1 normal none running pop;"]'
-          )
-          .then(resolve)
-          .catch(rejects);
-      }),
-      new Promise(async (resolve, rejects) => {
-        await page.waitForTimeout(4000);
-        const isElmPresent = await this._detect_captcha(page);
-        let cursor: any = null;
-        if (isElmPresent) {
-          await page.click("div.h-captcha > iframe");
-          const frame = await page
-            .frames()
-            .find((x) => x.url().includes("https://newassets.hcaptcha.com"));
+    return await new Promise(async (resolve, rejects) => {
+      await page.waitForTimeout(4000);
+      const isElmPresent = await this._detect_captcha(page);
+      let cursor: any = null;
+      if (isElmPresent) {
+        await page.click("div.h-captcha > iframe");
+        const frame = await page
+          .frames()
+          .find((x) => x.url().includes("https://newassets.hcaptcha.com"));
+        let token: string = "";
+        while (!token) {
           if (frame !== null && frame !== undefined) {
             await frame.waitForSelector(".prompt-text").catch(async (e) => {
               const token = await page.evaluate("hcaptcha.getResponse();");
@@ -61,20 +54,21 @@ export class PuppeterHcaptchaSolve {
             if (this.use_gc) {
               cursor = await createCursor(page);
             }
-            const token = await this._click_good_images(
+            token = await this._click_good_images(
               frame,
               _challenge_question,
               page,
               cursor
             );
-            resolve(token);
+            sleep(2);
           }
-        } else {
-          // throw Error("Captcha not detected");
-          rejects("Captcha not detected");
         }
-      }),
-    ]);
+        resolve(token);
+      } else {
+        // throw Error("Captcha not detected");
+        rejects("Captcha not detected");
+      }
+    });
   }
 
   private async _detect_captcha(page: Page) {
@@ -99,7 +93,7 @@ export class PuppeterHcaptchaSolve {
     label: string,
     page: Page,
     cursor: any
-  ): Promise<string | undefined> {
+  ): Promise<string> {
     return new Promise(async (resolve) => {
       await sleep(0.5);
       for (let i = 0; i < 9; i++) {
