@@ -21,7 +21,13 @@ export class PuppeterHcaptchaSolve {
       const isElmPresent = await this._detect_captcha(page);
       let cursor: any = null;
       if (isElmPresent) {
-        await page.click("div.h-captcha > iframe");
+        try {
+          await page.click("div.h-captcha > iframe");
+        } catch (e) {
+          const el = await page.waitForSelector("div.h-captcha > iframe");
+          const captchaFrame = await el!.contentFrame();
+          await captchaFrame!.click("div#checkbox");
+        }
         const frame = await page
           .frames()
           .find((x) => x.url().includes("https://newassets.hcaptcha.com"));
