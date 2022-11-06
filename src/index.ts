@@ -137,7 +137,10 @@ export class PuppeterHcaptchaSolve {
           elementHandle
         );
         const url = await style.split('url("')[1].split('")')[0];
-        const res = await get_result(url, label);
+        let res: boolean | null = null;
+        while (res === null) {
+          res = await get_result(url, label);
+        }
         if (res) {
           if (cursor !== null) {
             await cursor.click(`div.task-image:nth-child(${i + 1})`, {}, frame);
