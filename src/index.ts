@@ -63,6 +63,8 @@ export class PuppeterHcaptchaSolve {
               cursor
             );
             sleep(2);
+          } else {
+            rejects('Captcha not detected');
           }
         }
         resolve(token);
