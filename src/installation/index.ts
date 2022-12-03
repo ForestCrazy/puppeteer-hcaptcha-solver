@@ -31,7 +31,7 @@ export const install_py_files = async () => {
         });
       }
       exec(
-        "pip install opencv-python requests httpx flask hcaptcha-challenger --user"
+        "pip install opencv-python requests httpx flask git+https://github.com/ForestCrazy/hcaptcha-challenger/ --user"
       ); // Install all the required python modules.
       return true;
     })();
