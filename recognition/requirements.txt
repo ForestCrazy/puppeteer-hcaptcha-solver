@@ -1,3 +1,2 @@
 httpx
 flask
-git+https://github.com/ForestCrazy/hcaptcha-challenger/
