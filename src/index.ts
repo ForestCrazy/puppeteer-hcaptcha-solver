@@ -56,12 +56,16 @@ export class PuppeterHcaptchaSolve {
             if (this.use_gc) {
               cursor = await createCursor(page);
             }
+            try {
             token = await this._click_good_images(
               frame,
               _challenge_question,
               page,
               cursor
             );
+          } catch (e) {
+            rejects(e)
+          }
             sleep(2);
           } else {
             rejects('Captcha not detected');
@@ -138,7 +142,7 @@ export class PuppeterHcaptchaSolve {
         let res: boolean | null = null;
         while (res === null) {
           res = await get_result(url, label);
-        }
+          }
         if (res) {
           if (cursor !== null) {
             await cursor.click(`div.task-image:nth-child(${i + 1})`, {}, frame);
